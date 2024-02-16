@@ -11,7 +11,7 @@ public class DatabaseUtil {
 					name varchar(40) not null unique
 				)
 				""";
-		
+
 		final String BOOK = """
 				create table book(
 					id int primary key auto_increment,
