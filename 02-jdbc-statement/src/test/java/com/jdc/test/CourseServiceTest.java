@@ -27,6 +27,14 @@ public class CourseServiceTest {
 	}
 	
 	@ParameterizedTest
+	@Order(3)
+	@CsvSource({"1, 3", "2, 2"})
+	void test_for_delete(int id, long remainCount) {
+		service.delete(id);
+		assertEquals(remainCount, service.getCount());
+	}
+	
+	@ParameterizedTest
 	@Order(2)
 	@CsvSource("3, Angular Framework, 420000, 2024-01-02, 4")
 	void test_for_course_update(int id, String name, int fees, 

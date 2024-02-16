@@ -14,6 +14,20 @@ public class CourseService {
 	
 	private final String SELECT = "select * from course";
 	
+	public void delete(int id) {
+		final String DELETE = "delete from course where id = ?";
+		
+		try(var conn = getDbConnection();
+				var stmt = conn.prepareStatement(DELETE)) {
+			
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void save(Course course) {
 		checkCourse(course);
 		boolean isUpdate = course.id() > 0;
