@@ -1,0 +1,9 @@
+ShawShank Redemption,80,BK00021,0,True Story,1
+Journey to the Mars,38,BK00123,2,Adventures,2
+Green Book,60,BK00321,0,Political,3
+Wonder,58,BK00234,3,Drama,4
+Hacksaw Ridge,79,BK00410,0,War,5
+Catch Me If You Can,100,BK01234,1,Actions,6
+Inception,80,BK02314,1,Actions,7
+Stand By Me,59,BK05123,3,Drama,8
+Hachi,70,BK03245,3,Drama,9

@@ -1,0 +1,5 @@
+,,,6
+Shaw,,,1
+,,Drama,3
+,,Action,2
+Stand,,Drama,1

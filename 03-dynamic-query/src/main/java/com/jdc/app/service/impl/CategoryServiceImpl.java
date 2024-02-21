@@ -37,6 +37,8 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		Predicate<Category> isUpdate = c -> c.getId() > 0;
 		
+		var resultId = 0;
+		
 		try(var conn = DatabaseConnector.getDatabaseConnection();
 				var stmt = conn.prepareStatement(isUpdate.test(category) ? UPDATE : INSERT, 
 							Statement.RETURN_GENERATED_KEYS)) {
@@ -48,15 +50,19 @@ public class CategoryServiceImpl implements CategoryService {
 			
 			stmt.executeUpdate();
 			// select id from category where name = category.name
-			var rs = stmt.getGeneratedKeys();
-			while(rs.next())
-				return rs.getInt(1);
+			if(isUpdate.test(category)) {
+				resultId = category.getId();
+			} else {
+				var rs = stmt.getGeneratedKeys();
+				while(rs.next())
+					resultId = rs.getInt(1);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return 0;
+		return resultId;
 	}
 	
 	@Override
