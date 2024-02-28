@@ -12,8 +12,8 @@ public class CommonEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String key;
-	private int value;
+	private String keyText;
+	private int valueText;
 
 }
 
