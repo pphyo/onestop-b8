@@ -22,7 +22,7 @@ public final class RelationshipMappingTest extends BaseTest {
 		
 		HeroRole role = new HeroRole();
 		role.setRoleName("Fighter");
-		role.setHero(hero);
+		role.setHeroEntity(hero);
 		
 		em.persist(role);
 		
@@ -30,10 +30,3 @@ public final class RelationshipMappingTest extends BaseTest {
 	}
 
 }
-
-
-
-
-
-
-

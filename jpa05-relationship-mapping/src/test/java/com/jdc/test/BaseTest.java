@@ -16,7 +16,7 @@ public sealed class BaseTest permits RelationshipMappingTest {
 	
 	@BeforeAll
 	static void setUpBeforeClass() {
-		emf = Persistence.createEntityManagerFactory("rm-mysql");
+		emf = Persistence.createEntityManagerFactory("rm-h2");
 	}
 	
 	@BeforeEach

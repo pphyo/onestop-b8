@@ -5,9 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -25,10 +24,12 @@ public class HeroRole implements Serializable {
 	@Column(name = "role_name", nullable = false, length = 40, unique = true)
 	private String roleName;
 	
-	@OneToOne(optional = false)
-	@PrimaryKeyJoinColumn
-	@MapsId
-	private Hero hero;
+	@OneToOne
+//	@JoinColumn(name = "hero_entity")
+//	@PrimaryKeyJoinColumn
+//	@MapsId
+	@JoinTable(name = "hero_role_hero")
+	private Hero heroEntity;
 	
 //	public void setHero(Hero hero) {
 //		this.hero = hero;

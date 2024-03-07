@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -29,11 +28,7 @@ public class Skin implements Serializable {
 	private SkinLevel level = SkinLevel.Default;
 	
 	@ManyToOne
-	@JoinTable(
-			name = "skins_hero",
-			joinColumns = @JoinColumn(name = "skin_id"),
-			inverseJoinColumns = @JoinColumn(nullable = false)
-		)
+	@JoinTable(name = "skins_hero")
 	private Hero hero;
 
 	public enum SkinLevel {
