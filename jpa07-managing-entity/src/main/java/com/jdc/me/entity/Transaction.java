@@ -18,9 +18,6 @@ public class Transaction implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(optional = false)
-	private Ledger ledger;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -29,5 +26,8 @@ public class Transaction implements Serializable {
 	private LocalDate issuedDate = LocalDate.now();
 	@Column(nullable = false)
 	private String issuer;
+	
+	@ManyToOne(optional = false)
+	private Ledger ledger;
 	
 }
