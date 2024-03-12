@@ -1,6 +1,5 @@
 package com.jdc.me.test;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,6 @@ public class PersistenceContextTest extends AbstractTest {
 	@ParameterizedTest
 	@Order(2)
 	@ValueSource(ints = 1)
-	@Disabled
 	void test_for_find(int id) {
 		em.getTransaction().begin();
 
