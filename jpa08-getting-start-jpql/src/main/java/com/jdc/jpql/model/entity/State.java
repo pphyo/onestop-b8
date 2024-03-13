@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedNativeQuery;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,14 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "state")
+@NamedNativeQuery(name = "StateNative.findById", 
+	query = "select * from state where id = ?",
+	resultClass = State.class)
+@NamedNativeQuery(name = "StateNative.getAll", 
+	query = "select * from state",
+	resultClass = State.class)
+@NamedQuery(name = "State.getAll", query = "select s from State s")
+@NamedQuery(name = "State.findById", query = "select s from State s where s.stateId = :id")
 public class State implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -33,7 +43,7 @@ public class State implements Serializable {
 	@Column(nullable = false)
 	private String capital;
 	private int population;
-	
+		
 	public enum Region {
 		East, West, South, North, Central
 	}

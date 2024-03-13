@@ -28,7 +28,7 @@ public class Township implements Serializable {
 	@Column(nullable = false)
 	private String burmese;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne
 	private District district;
 
 }

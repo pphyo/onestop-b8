@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.jdc.jpql.model.dto.PopulationByRegion;
 import com.jdc.jpql.model.entity.State;
 import com.jdc.jpql.model.entity.State.Region;
 
@@ -19,22 +21,27 @@ public class JpqlSelectTest extends TestConfig {
 	
 	@ParameterizedTest
 	@CsvSource({
-		"1, Ayeyarwady Region, ဧရာဝတီတိုင်းဒေသကြီး, Pathein, South, 6184829",
-		"2, Bago Region, ပဲခူးတိုင်းဒေသကြီး, Bago, South, 4867373",
-		"3, Chin State, ချင်းပြည်နယ်, Hakha, North, 478801",
-		"4, Kachin State, ကချင်ပြည်နယ်, Myitkyina, North, 1689441",
-		"5, Kayah State, ကယားပြည်နယ်, Loikaw, East, 286627",
-		"6, Kayin State, ကရင်ပြည်နယ်, Hpa-an, South, 1574079",
-		"7, Magway Region, မကွေးတိုင်းဒေသကြီး, Magwe, Central, 3917055",
-		"8, Mandalay Region, မန္တလေးတိုင်းဒေသကြီး, Mandalay, Central, 6165723",
-		"9, Mon State, မွန်ပြည်နယ်, Mawlamyine, South, 2054393",
-		"10, Naypyidaw Union Territory, နေပြည်တော် ပြည်ထောင်စုနယ်မြေ, Naypyidaw, Central, 1160242",
-		"11, Rakhine State, ရခိုင်ပြည်နယ်, Sittwe, West, 3188807",
-		"12, Sagaing Region, စစ်ကိုင်းတိုင်းဒေသကြီး, Monywa, North, 5325347",
-		"13, Shan State, ရှမ်းပြည်နယ်, Taunggyi, North, 5824432",
-		"14, Tanintharyi Region, တနင်္သာရီတိုင်းဒေသကြီး, Dawei, South, 1408401",
-		"15, Yangon Region, ရန်ကုန်တိုင်းဒေသကြီး, Yangon, Central, 7360703"
+		"South, 16089075",
+		"East, 286627",
+		"North, 13318021",
+		"West, 3188807",
+		"Central, 18603723"
 	})
+	void test_for_select_group_by(Region region, long populationByRegion) {
+		String qlString = "select NEW com.jdc.jpql.model.dto.PopulationByRegion(s.region, sum(s.population)) from State s group by s.region having s.region = :region";
+
+		var query = em.createQuery(qlString, PopulationByRegion.class);
+		query.setParameter("region", region);
+		
+		assertEquals(region, query.getParameterValue("region"));
+		
+		var result = query.getSingleResult();
+		assertEquals(region, result.region());
+		assertEquals(populationByRegion, result.population());
+	}
+	
+	@ParameterizedTest
+	@CsvFileSource(resources = "/states.csv")
 	void test_for_select_id_equals(int id, String name,
 			String burmese, String capital, Region region, int population) {
 		String qlString = "select s from State s where s.stateId = :id";
