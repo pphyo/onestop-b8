@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.jdc.join.model.entity.constants.Level;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class Course implements Serializable {
 	@Column(nullable = false, name = "start_date")
 	private LocalDate startDate;
 	
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "course_category",
 			joinColumns = @JoinColumn(name = "course_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))

@@ -21,7 +21,7 @@ import lombok.Setter;
 public class Registration {
 	
 	@EmbeddedId
-	private Registration.RegistrationID id;
+	private Registration.RegistrationID id = new Registration.RegistrationID();
 	
 	@Column(nullable = false, name = "reg_date")
 	private LocalDate regDate;

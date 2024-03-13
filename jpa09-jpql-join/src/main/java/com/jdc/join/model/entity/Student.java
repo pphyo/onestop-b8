@@ -5,8 +5,10 @@ import java.time.LocalDate;
 
 import com.jdc.join.model.entity.constants.Gender;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
@@ -34,9 +36,10 @@ public class Student implements Serializable {
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
 	
-	@OneToOne
-	@PrimaryKeyJoinColumn(name = "id")
-	@MapsId("id")
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, 
+			optional = false, fetch = FetchType.LAZY)
+//	@PrimaryKeyJoinColumn(name = "id")
+//	@MapsId("id")
 	private Contact contact;
 
 }
