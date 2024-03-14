@@ -38,8 +38,8 @@ public class Student implements Serializable {
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, 
 			optional = false, fetch = FetchType.LAZY)
-//	@PrimaryKeyJoinColumn(name = "id")
-//	@MapsId("id")
+	@PrimaryKeyJoinColumn(name = "id")
+	@MapsId("id")
 	private Contact contact;
 
 }
