@@ -50,7 +50,10 @@ public class JpqlJoinTest {
 		"38000, 0"
 	})
 	void test_for_path_expression(double price, int count) {
-		String qlString = "select NEW com.jdc.join.model.dto.BookByWholesalePrice(b.name, KEY(ws), VALUE(ws)) from Book b join b.wholesalePrice ws where VALUE(ws) > :wsprice";
+		String qlString = """
+				select NEW 
+				com.jdc.join.model.dto.BookByWholesalePrice(b.name, KEY(ws), VALUE(ws)) 
+				from Book b join b.wholesalePrice ws where VALUE(ws) > :wsprice""";
 		
 		var query = em.createQuery(qlString, BookByWholesalePrice.class);
 		query.setParameter("wsprice", price);
@@ -59,9 +62,7 @@ public class JpqlJoinTest {
 		assertEquals(count, list.size());
 	}
 	
-	@ParameterizedTest
-	@Order(6)
-	@CsvSource({
+	@ParameterizedTest	@Order(6) @CsvSource({
 		"Programming, 3",
 		"Java, 2",
 		"Spring Framework, 1",
