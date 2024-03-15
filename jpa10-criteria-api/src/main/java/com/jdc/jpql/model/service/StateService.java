@@ -1,23 +1,30 @@
 package com.jdc.jpql.model.service;
 
-import java.util.List;
+import static com.jdc.jpql.model.support.StringUtils.hasLength;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+import com.jdc.jpql.model.CriteriaException;
 import com.jdc.jpql.model.entity.State;
 import com.jdc.jpql.model.entity.State.Region;
+import com.jdc.jpql.model.repo.StateRepository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Predicate;
 
 public class StateService {
 	
 	private static StateService service;
 	
-	private EntityManager em;
+	private StateRepository repo;
 	
 	private StateService(EntityManager em) {
-		this.em = em;
+		repo = new StateRepository(em);
 	}
 	
 	public static StateService getInstance(EntityManager em) {
@@ -27,49 +34,77 @@ public class StateService {
 	}
 	
 	public List<State> find(String name, String capital, int population) {
-		var cb = em.getCriteriaBuilder();
-		var cq = cb.createQuery(State.class);
-		var root = cq.from(State.class);
 		
-		cq.select(root).where(
-				// name like
-				cb.like(cb.lower(root.get("name")), name.toLowerCase()),
-				
-				// capital like
-				cb.like(cb.lower(root.get("capital")), capital.toLowerCase()),
-				
-				// population greater than equal
-				cb.greaterThanOrEqualTo(root.get("population"), population)
-				);
+		Function<CriteriaBuilder, CriteriaQuery<State>> queryFunc = cb -> {
+			var cq = cb.createQuery(State.class);
+			var root = cq.from(State.class);
+			
+			List<Predicate> predicates = new ArrayList<>();	
+			// name like
+			if(hasLength(name))
+				predicates.add(cb.like(cb.lower(root.get("name")), "%s%s".formatted(name.toLowerCase(), "%")));
+			
+			// capital like
+			if(hasLength(capital))
+				predicates.add(cb.like(cb.lower(root.get("capital")), "%s%s".formatted(capital.toLowerCase(), "%")));
+			
+			// population greater than equal
+			if(population > 0)
+				predicates.add(cb.greaterThanOrEqualTo(root.get("population"), population));
+			
+			cq.select(root).where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+			
+			return cq;
+		};
 		
-		return em.createQuery(cq).getResultList();
+		return repo.getAll(queryFunc);
 	}
 	
 	// select * from state where id = ?
 	public State findById(int id) {
-		var cb = em.getCriteriaBuilder();
-		var cq = cb.createQuery(State.class);
-		var root = cq.from(State.class);
-		
-		cq.select(root).where(cb.equal(root.get("stateId"), id));
-		
-		return em.createQuery(cq).getSingleResult();
+		try {
+			/* var cb = em.getCriteriaBuilder();
+			var cq = cb.createQuery(State.class);
+			var root = cq.from(State.class);
+			
+			cq.select(root).where(cb.equal(root.get("stateId"), id)); */
+			
+			Function<CriteriaBuilder, CriteriaQuery<State>> queryFunc = cb -> {
+				var cq = cb.createQuery(State.class);
+				var root = cq.from(State.class);
+				
+				cq.select(root).where(cb.equal(root.get("stateId"), id));
+				
+				return cq;
+			};
+			
+			return repo.getWithId(queryFunc);
+		} catch(NoResultException e) {
+			throw new CriteriaException("No record found for state with ID %d.".formatted(id));
+		}
 	}
 	
 	// select * from state where region = ?
 	public List<State> findByRegion(Region region) {
-		var cb = em.getCriteriaBuilder();
+		/* var cb = em.getCriteriaBuilder();
 		var cq = cb.createQuery(State.class);
 		var root = cq.from(State.class);
 		
-		cq.select(root).where(cb.equal(root.get("region"), region));
+		cq.select(root).where(cb.equal(root.get("region"), region)); */
 		
-		return em.createQuery(cq).getResultList();
+		Function<CriteriaBuilder, CriteriaQuery<State>> queryFunc = cb -> {
+			var cq = cb.createQuery(State.class);
+			var root = cq.from(State.class);
+			cq.select(root).where(cb.equal(root.get("region"), region));
+			return cq;
+		};
+		
+		return repo.getAll(queryFunc);
 	}
 	
 	// select * from state
 	public List<State> findAll() {
-		// create criteria builders
+		/* / create criteria builders
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		
 		// create criteria query
@@ -79,9 +114,22 @@ public class StateService {
 		Root<State> root = cq.from(State.class);
 		
 		// select s from State s
-		cq.select(root);
+		cq.select(root); */
 		
-		return em.createQuery(cq).getResultList();
+		Function<CriteriaBuilder, CriteriaQuery<State>> queryFunc = cb -> {
+			var cq = cb.createQuery(State.class);
+			return cq.select(cq.from(State.class));
+		};
+		
+		return repo.getAll(queryFunc);
 	}
 	
 }
+
+
+
+
+
+
+
+

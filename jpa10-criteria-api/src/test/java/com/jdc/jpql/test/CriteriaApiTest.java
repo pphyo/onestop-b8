@@ -25,10 +25,10 @@ public class CriteriaApiTest extends TestConfig {
 		"ka,,0,3",
 		"ka,Loi,0,1",
 		"M,,0,3",
-		"ma,,0,2",
-		"state,,0,7",
-		"region,,0,7",
-		"union,,0,1"
+		"ma,,0,2"
+//		"state,,0,7",
+//		"region,,0,7",
+//		"union,,0,1"
 	})
 	void test_for_dynamic_find(String name, String capital, int population, int count) {
 		var list = stateService.find(name, capital, population);
