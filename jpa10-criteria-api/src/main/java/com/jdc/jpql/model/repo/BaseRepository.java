@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 
 public interface BaseRepository<E> {
 	
+	Long count(Function<CriteriaBuilder, CriteriaQuery<Long>> countFunc);
 	List<E> getAll(Function<CriteriaBuilder, CriteriaQuery<E>> queryFunc);
 	E getWithId(Function<CriteriaBuilder, CriteriaQuery<E>> queryFunc);
 

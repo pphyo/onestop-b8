@@ -14,6 +14,10 @@ public class BaseRepositoryImpl<E> implements BaseRepository<E> {
 	public BaseRepositoryImpl(EntityManager em) {
 		this.em = em;
 	}
+	
+	public Long count(Function<CriteriaBuilder, CriteriaQuery<Long>> countFunc) {
+		return em.createQuery(countFunc.apply(em.getCriteriaBuilder())).getSingleResult();
+	}
 
 	@Override
 	public List<E> getAll(Function<CriteriaBuilder, CriteriaQuery<E>> queryFunc) {

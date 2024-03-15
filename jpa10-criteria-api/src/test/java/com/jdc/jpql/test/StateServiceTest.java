@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.jdc.jpql.model.entity.State.Region;
 import com.jdc.jpql.model.service.StateService;
 
-public class CriteriaApiTest extends TestConfig {
+public class StateServiceTest extends TestConfig {
 	
 	StateService stateService;
 	

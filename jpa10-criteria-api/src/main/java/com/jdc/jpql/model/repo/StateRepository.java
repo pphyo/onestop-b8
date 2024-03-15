@@ -9,5 +9,5 @@ public class StateRepository extends BaseRepositoryImpl<State> {
 	public StateRepository(EntityManager em) {
 		super(em);
 	}
-
+	
 }
